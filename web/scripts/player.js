@@ -103,7 +103,7 @@ function Player() {
         oldFadeGainNode.disconnect(0);
         oldSource.disconnect(0);
         oldAnalyser.disconnect(0);
-        window.webkitCancelRequestAnimationFrame(frameRequest); // TODO: onPause?
+        window.cancelAnimationFrame(frameRequest); // TODO: onPause?
       }, fadeTime * 1000);
       source = null;
       fadeGainNode = null;
@@ -183,11 +183,11 @@ function Player() {
   
   function processFDRendering() {
     renderFrequencyData();
-    frameRequest = window.webkitRequestAnimationFrame(processFDRendering);
+    frameRequest = window.requestAnimationFrame(processFDRendering);
   }
   
   function renderFrequencyData(time) {
-    if(canvas != null && canvasCtx != null) {
+    if(canvas != null && canvasCtx != null && analyser != null) {
       var freqByteData = new Uint8Array(analyser.frequencyBinCount);
       analyser.getByteFrequencyData(freqByteData);
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
