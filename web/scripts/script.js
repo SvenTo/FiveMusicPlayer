@@ -250,7 +250,7 @@ function Playlist() {
     var base = document.querySelector(musicTracksDivName + ' > .trackBase');
     for(var i = 0; i < MAX_TRACKS; i++) {
       var newTrack = base.cloneNode(true);
-      newTrack.setAttribute("style", "-webkit-transform: rotateY("+i*degreePerTrack+"deg) translateZ(600px);");
+      newTrack.setAttribute("style", "transform: rotateY("+i*degreePerTrack+"deg) translateZ(600px);");
       newTrack.setAttribute("data-tracknumber", i);
       //newTrack.onclick = rotateToTrack; // onmouseover <- TODO: implement?
       musicTracksDiv.appendChild(newTrack);
@@ -275,11 +275,11 @@ function Playlist() {
     var keyFrames = findKeyFramesRule("rotateMusicTracks");
     var startPos = -1 * frontTrackNumber * degreePerTrack;
     var endPos = -1 * newFrontTrackNumber * degreePerTrack;
-    replaceKeyFramesRule(keyFrames, "0%", "-webkit-transform: rotateY("+startPos+"deg);");
-    replaceKeyFramesRule(keyFrames, "100%", "-webkit-transform: rotateY("+endPos+"deg);");
+    replaceKeyFramesRule(keyFrames, "0%", "transform: rotateY("+startPos+"deg);");
+    replaceKeyFramesRule(keyFrames, "100%", "transform: rotateY("+endPos+"deg);");
     
     musicTracksDiv.classList.add("rotateMusicTracks");
-    musicTracksDiv.setAttribute("style", "-webkit-transform: rotateY("+endPos+"deg)");
+    musicTracksDiv.setAttribute("style", "transform: rotateY("+endPos+"deg)");
     // Remove class before animation next animation starts
     window.setTimeout(removeAnimationClass, 999);
     
@@ -370,7 +370,7 @@ function MusicFile(file, index) {
     
     duration = Math.round(duration);
     divText.classList.add('progressBar');
-    divText.setAttribute("style","-webkit-animation: progressBar "+duration+"s 1 linear;");
+    divText.setAttribute("style","animation: progressBar "+duration+"s 1 linear;");
   }
   
   function playerSetPause(duration, playedDuration) {
@@ -384,7 +384,7 @@ function MusicFile(file, index) {
     replaceKeyFramesRule(keyFrames, "0%", "background-size: auto "+progressWidth+"px;");
     
     var toPlay = Math.round(duration-playedDuration);
-    divText.setAttribute("style","-webkit-animation: progressBar "+toPlay+"s 1 linear;");
+    divText.setAttribute("style","animation: progressBar "+toPlay+"s 1 linear;");
   }
   
   function playPause() {
