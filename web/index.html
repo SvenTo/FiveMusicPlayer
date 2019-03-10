@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="author" content="Sven Nobis">
+	<meta name="robots" content="index,follow">
+	<meta name="keywords" content="HTML5, Experiment Javascript, Music, Player, Drap'n'Drop, Web Audio API, File API">
+	<title>FiveMusicPlayer - A HTML5 Experiment</title>
+	
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="style/style.css">
+	
+	<script type="text/javascript" src="scripts/tools.js"></script>
+	<script type="text/javascript" src="scripts/toast.js"></script>
+	<script type="text/javascript" src="scripts/player.js"></script>
+	<script type="text/javascript" src="scripts/script.js"></script>
+	<script type="text/javascript" src="scripts/id3-minimized.js"></script>
+	
+	<!-- 3rd Party -->
+	<!-- <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-27351911-1']);
+	  _gaq.push(['_setDomainName', 'sven.to']);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script> -->
+</head>
+<body>
+	<article id="info">
+		<h1>FiveMusicPlayer <g:plusone size="small" href="http://www.sven.to/FiveMusicPlayer"></g:plusone></h1>
+		<h2>A HTML5 Experiment</h2>
+		<p id="fallbackMessage" class="fallbackInvisible">Sorry, your browser is currently not supported. You need Chrome or Chromium (version 11 or later) to view this experiment.</p>
+		<p id="howto">Drag some music (.mp3, .ogg, ...) into your browser window and look what HTML5 can do with it ;-).</p>
+		<p>
+		<p>Created by <a href="https://plus.google.com/113062950789010266684" target="_blank">Sven Nobis</a> <span id="mail"></span> using <a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html" target="_blank">Web Audio API</a>, <a href="http://www.w3.org/TR/file-upload/" target="_blank">File API</a>, <a href="https://github.com/aadsm/JavaScript-ID3-Reader/Taglib" target="_blank">JavaScript ID3 Reader</a> and CSS3.</p>
+	</article>
+	<div id="container">
+		<div id="stage">
+			<div id="toolbar">
+				<div id="rightRotateButton" class="rotateButton"></div>
+				<div id="frontControls">
+					<div id="bar">
+						<div id="slider" title="Adjust speaker volume"></div>
+					</div>
+				</div>
+				<div id="leftRotateButton" class="rotateButton"></div>
+			</div>
+			<div id="musicTracks">
+				<div class="trackBase placeholder" style="display: none;">
+					<canvas width="300" height="300"></canvas>
+					<div class="text"></div>
+					<div class="playbackControl" title="Play"></div>
+					<div class="remove" title="Remove Track"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="add"></div>
+	<div id="toast" class="toastInvisible">
+		<div></div>
+	</div>
+</body>
+</html>

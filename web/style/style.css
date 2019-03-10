@@ -1,0 +1,420 @@
+/*****************************************************************/
+/* General                                                       */
+/*****************************************************************/
+
+body {
+	background-color: black;
+	color: white;
+	font-family: 'Droid Sans', sans-serif;
+	font-size: 11pt;
+	text-shadow: black 0px 0px 3px;
+	background-image: -webkit-gradient(radial,
+									   50% 300, 1,
+									   50% 300, 600,
+									   from(rgba(255, 255, 255, 0.3)),
+									   to(rgba(255, 255, 255, 0) ));
+	background-repeat: no-repeat;
+}
+
+h1 {
+	font-size: 16pt;
+}
+
+h2 {
+	font-size: 12pt;
+}
+
+a {
+	color: white;
+}
+
+a:hover {
+	text-shadow: white 0px 0px 3px;
+}
+
+/*****************************************************************/
+/* Info Box                                                      */
+/*****************************************************************/
+
+article#info {
+	/*font-family: 'Chivo', sans-serif;*/
+	width: 80%;
+	margin: 0 auto;
+	padding: 5px 20px;
+	border-radius: 12px;
+	border: 1px solid white;
+	background-color: rgba(255, 255, 255, 0.2);
+	box-shadow: 0px 0px 15px black;
+}
+
+article#info > h1 {
+	margin-top: 0.5em;
+}
+
+
+article#info > h2 {
+	margin-top: -1em;
+}
+
+
+
+/*****************************************************************/
+/* Drag'n'Drop Overlay                                           */
+/*****************************************************************/
+
+#add {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: url('images/add.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0.0;
+	display: none;
+}
+
+.addVisible {
+	display: block !important;
+	opacity: 0.6 !important;
+	-webkit-transition: opacity 2s;
+}
+
+.addFinish {
+	display: block !important;
+	-webkit-animation: addFinish 1s 1;
+}
+
+@-webkit-keyframes addFinish { 
+	0% {
+		opacity: 0.6;
+	}
+	100% {
+		opacity: 0;
+		-webkit-transform: scale(5,5);
+	}
+}
+
+
+/*****************************************************************/
+/* Album Covers                                                  */
+/*****************************************************************/
+
+/***** Track Environment *****/
+
+#container {
+	width: 100%;
+	height: 700px;
+	overflow: hidden;
+	/* For compatibility with iPhone 3.0, we leave off the units here */
+	-webkit-perspective: 800;
+	-webkit-perspective-origin: 50% 225px;
+}
+
+#stage {
+	width: 100%;
+	height: 100%;
+	-webkit-transition: -webkit-transform 2s;
+	-webkit-transform-style: preserve-3d;
+	-webkit-transform: translateZ(-600px);
+}
+
+#musicTracks {
+	/* Center Tracks */
+	position: relative;
+	top: 0px;
+	margin: 0 auto;
+	height: 300px;
+	width: 300px;
+	
+    -webkit-transform-style: preserve-3d;
+    /*-webkit-transition: -webkit-transform 1s linear;*/
+}
+
+@-webkit-keyframes rotateMusicTracks { 
+	from {
+		-webkit-transform: rotateY(0deg);
+	}
+	to {
+		-webkit-transform: rotateY(360deg);
+	}
+}
+
+.rotateMusicTracks {
+	-webkit-animation: rotateMusicTracks 1s 1 linear;
+}
+
+/***** Single Track *****/
+
+#musicTracks > .trackBase {
+	position: absolute;
+	height: 300px;
+	width: 300px;
+	border: 1px solid black;
+	-webkit-border-radius: 5px;
+	-webkit-box-sizing: border-box;
+	padding: 3px;
+	-webkit-transition: -webkit-transform 2s, opacity 2s;
+	-webkit-backface-visibility: visible;
+	background: url('images/nocover.png');
+	background-size: cover;
+	-webkit-box-reflect: below 0px
+		-webkit-gradient(linear, 0 0, 0 100%, from(transparent),
+		color-stop(50%, transparent), to(white) );
+	box-shadow: 0px 0px 15px black;
+}
+
+#musicTracks > .trackBase > .text {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	width: 292px;
+	padding: 3px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+/***** Loaded Track *****/
+
+#musicTracks > .track {
+	text-align: right;
+}
+
+#musicTracks  >  .track  >  .text {
+	border-top: 1px solid rgba(0, 0, 0, 0.6);
+	background-color: rgba(0, 0, 0, 0.4);	
+}
+
+#musicTracks  >  .track  >  .text:first-line {
+	font-weight: bold;
+}
+
+#musicTracks > .track > canvas {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	height: 300px;
+	width: 300px; 
+	-webkit-border-radius: 5px;
+}
+
+/***** Controls *****/
+
+#musicTracks > .track > .playbackControl {
+	position: absolute;
+	left: 35px;
+	top: 35px;
+	background: url('images/play.png');
+	width: 230px;
+	height: 230px;
+	opacity: 0.0;
+	-webkit-transition: opacity 0.5s;
+	cursor: pointer;
+}
+
+#musicTracks > .track > .playbackControl[title="Pause"] {
+	background: url('images/pause.png');
+}
+
+
+#musicTracks > .track > .remove {
+	position: absolute;
+	left: 264;
+	top: 4;
+	background: url('images/remove.png');
+	width: 32px;
+	height: 32px;
+	opacity: 0.0;
+	-webkit-transition: opacity 0.5s;
+	cursor: pointer;
+}
+
+#musicTracks > .track:hover > .playbackControl {
+	opacity: 0.5;
+}
+
+#musicTracks > .track:hover > .remove {
+	opacity: 0.5;
+}
+
+#musicTracks > .track > .playbackControl:hover {
+	opacity: 1;
+}
+
+#musicTracks > .track > .remove:hover {
+	opacity: 1;
+}
+
+
+/***** Track Placeholder *****/
+
+#musicTracks > .placeholder {
+	opacity: 0.6;
+}
+
+#musicTracks > .placeholder > .text {
+	text-align: center;
+	font-weight: bold;
+	bottom: 11pt;
+}
+
+#musicTracks > .placeholder > .text:before {
+	content: "Drag'n'Drop some music here!";
+}
+
+#musicTracks > .placeholder > .playbackControl {
+	display: none;
+}
+
+#musicTracks > .placeholder > .drop {
+	display: none;
+}
+
+#musicTracks > .placeholder > canvas {
+	display: none;
+}
+
+/***** Progressbar *****/
+
+.progressBar {
+	/* 1x1 pixel rgba(0,0,0,0.4); */
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLHAAoFnC7hIEAAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAAA1JREFUCNdjYGBgSAMAAGsAZ8KtDSgAAAAASUVORK5CYII=');
+	background-repeat: repeat-y;
+	background-size: auto 300px;
+	background-color: transparent !important;
+	/*-webkit-animation: progressBar 200s 1 linear;*/
+}
+
+@-webkit-keyframes progressBar { 
+	from {
+		background-size: auto 0px;
+	}
+	to {
+		background-size: auto 300px;
+	}
+}
+
+/*****************************************************************/
+/* Rotate Buttons                                                */
+/*****************************************************************/
+
+#toolbar {
+	position: absoulte;
+	top: 0px;
+	margin: 0 auto;
+	height: 100px;
+	width: 300px;
+    -webkit-transform-style: preserve-3d;
+}
+
+#toolbar > div {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+}
+
+#frontControls {
+	-webkit-transform: translateZ(600px);
+	height: 100%;
+	width: 100%;
+}
+
+#frontControls > #bar {
+	position: relative;
+	height: 24px;
+	width: 100px;
+  	margin: 54px auto;
+	background-image: url('images/bar.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0.6;
+	-webkit-transition: opacity 0.5s;
+	user-select: none;
+}
+
+#frontControls > #bar > #slider {
+	position: absolute;
+	left: 80px;
+	height: 24px;
+	width: 24px;
+	background-image: url('images/slider.png');
+	user-select: none;
+	cursor: pointer;
+}
+
+#frontControls > #bar:hover {
+	opacity: 1;
+}
+
+#leftRotateButton {
+	-webkit-transform: rotateY(-30deg) translateZ(600px) rotate(180deg);
+}
+
+#rightRotateButton {
+	-webkit-transform: rotateY(30deg) translateZ(600px);
+}
+
+.rotateButton {
+	height: 60px;
+	width: 158px;
+	margin: auto;
+	margin-top: 30px;
+	opacity: 0.6;
+	-webkit-transition: opacity 0.5s;
+	cursor: pointer;
+	background-image: url('images/rotate.png');
+}
+
+.rotateButton:hover {
+	opacity: 1;
+}
+
+/*****************************************************************/
+/* Toast                                                         */
+/*****************************************************************/
+
+#toast {
+	position: fixed;
+	left: 50%;
+	top: 90%;
+	-webkit-transition: opacity 2s;
+}
+
+.toastInvisible {
+	display: none;
+	opacity: 0;
+}
+
+#toast > div {
+	position: relative;
+	text-align: center;
+	left: -50%;
+	padding: 5px;
+	text-shadow: black 0px 0px 5px;
+	box-shadow: 0px 0px 15px black;
+	-webkit-border-radius: 6px;
+	border: 1px solid white;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+/*****************************************************************/
+/* Fallback                                                      */
+/*****************************************************************/
+
+.bodyFallback {
+	background-image: url('images/fallback-image.png') !important; 
+	background-size: cover !important;
+}
+
+.containerFallback {
+	display: none !important;
+}
+
+.fallbackInvisible {
+	display: none !important;
+}
+
+#fallbackMessage {
+	color: red;
+}
