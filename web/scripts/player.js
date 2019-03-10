@@ -5,7 +5,6 @@
  */
 function Player() {
   const fadeTime = 1;
-  const MSG_ERROR = "Sorry, there was an error while playing audio file.";
   
   var self = this;
   var context;
@@ -27,16 +26,14 @@ function Player() {
   var canvas = null;
   var canvasCtx = null;
   var frameRequest = null;
-  
-  
   init();
   
   /***** Events *****/
-  this.onError = new EventSource();
-  this.onPlay = new EventSource();
-  this.onPause = new EventSource();
-  this.onResume = new EventSource();
-  this.onStop = new EventSource(); // TODO: onStop
+  this.onError = null;
+  this.onPlay = null;
+  this.onPause = null;
+  this.onResume = null;
+  this.onEndOfTrack = null;
   
   /***** Public Methods *****/
   this.play = play;
@@ -79,7 +76,7 @@ function Player() {
         endOfTrackTimeout = window.setTimeout(endOfTrack,
             (source.buffer.duration - playedDuration) * 1000);
         playing = true;
-        onResume.raise({ duration: source.buffer.duration, playedDuration: playedDuration });
+        raiseEvent(self.onResume, source.buffer.duration, playedDuration);
       }
     }
   };
@@ -112,7 +109,6 @@ function Player() {
       fadeGainNode = null;
       analyser = null;
       endOfTrackTimeout = null;
-      onStop.raise({ endOfTrack: false }); // TODO: Implement correctly! -> stopped or playing other track?
     }
   };
   
@@ -129,7 +125,7 @@ function Player() {
     pausedTime = currTime +2;
     window.clearTimeout(endOfTrackTimeout);
     var playedDuration = currTime - startTime;
-    onPause.raise({ duration: buffer.duration, playedDuration: playedDuration });
+    raiseEvent(self.onPause, source.buffer.duration, playedDuration);
   };
   
   function decodeAndPlay(e) {
@@ -142,16 +138,16 @@ function Player() {
     if(!_canStart) return;
     source = context.createBufferSource();
     source.buffer = buffer;
-    fadeGainNode = context.createGainNode();
+    fadeGainNode = context.createGain();
     analyser = context.createAnalyser();
     analyser.connect(volumeGainNode);
     fadeGainNode.connect(analyser);
     source.connect(fadeGainNode);
-    source.noteOn(0);
+    source.start();
     playing = true;
     startTime = context.currentTime;
     endOfTrackTimeout = window.setTimeout(endOfTrack, buffer.duration * 1000);
-    onPlay.raise({ duration: buffer.duration });
+    raiseEvent(self.onPlay, buffer.duration);
     processFDRendering();
   }
   
@@ -160,21 +156,26 @@ function Player() {
   }
   
   function error(e) {
-    onError.raise({ msg: MSG_ERROR, error: e });
-    // TODO: stop?
+    if(self.onError instanceof Function) {
+      self.onError(e);
+    }
   }
   
   function endOfTrack()
   {
-    onStop.raise({ endOfTrack: true });
+    raiseEvent(self.onEndOfTrack);
+  }
+  
+  function raiseEvent(event, args1, args2, args3) {
+    if(event instanceof Function) {
+      event(args1, args2, args3);
+    }
   }
   
   function setCanvas(canvasElement) {
     canvas = canvasElement;
     canvasCtx = canvas.getContext('2d');
   }
-  
-  // TODO: Render Class?
   
   function initProcessFDRendering() {
     processFDRendering();
@@ -211,7 +212,7 @@ function Player() {
   function init() {
     try {
       context = new (window.AudioContext || window.webkitAudioContext)();
-      volumeGainNode = context.createGainNode();
+      volumeGainNode = context.createGain();
       volumeGainNode.connect(context.destination);
     }
     catch(e) {

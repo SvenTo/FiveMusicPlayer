@@ -97,7 +97,6 @@ function VolumeControl() {
   var startLeft;
   const MAX = 80;
   var sliderDiv = document.querySelector('#frontControls > #bar > #slider');
-  var barDiv = document.querySelector('#frontControls > #bar');
   
   init();
   
@@ -118,11 +117,8 @@ function VolumeControl() {
   }
 
   function volumeControlMouseMove(event) {
+    
     var newLeft = startLeft + event.x - startPos;
-    setVolumeControl(newLeft);
-  }
-  
-  function setVolumeControl(newLeft) {
     if(newLeft > MAX) {
       newLeft = MAX;
     } else if(newLeft < 0) {
@@ -170,7 +166,7 @@ function Playlist() {
     while(tracks[++i] != undefined)
     {
       if(i+1 == MAX_TRACKS) {
-        toast.show("Can't add file \""+file.fileName+"\" to playlist because the playlist is full.<br/> Please remove some tracks.");
+        toast.show("Can't add file \""+file.name+"\" to playlist because the playlist is full.<br/> Please remove some tracks.");
         return false;
       }
     }
@@ -308,7 +304,7 @@ function MusicFile(file, index) {
 	var divRemoveControl = document.querySelectorAll(divSelector + ' > .remove')[index+1];
 	var divCanvas = document.querySelectorAll(divSelector + ' > canvas')[index+1];
 	var url = file.urn ||file.name;
-	var title = fileNameWithoutExtension(file.fileName);
+	var title = fileNameWithoutExtension(file.name || file.fileName);
 	var stoppedTimeout = null;
 	var startedTime = null;
 	var playlistIndex = index;
