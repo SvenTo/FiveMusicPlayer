@@ -8,11 +8,9 @@ body {
 	font-family: 'Droid Sans', sans-serif;
 	font-size: 11pt;
 	text-shadow: black 0px 0px 3px;
-	background-image: -webkit-gradient(radial,
-									   50% 300, 1,
-									   50% 300, 600,
-									   from(rgba(255, 255, 255, 0.3)),
-									   to(rgba(255, 255, 255, 0) ));
+	background-image: radial-gradient(circle,
+									  rgba(255, 255, 255, 0.3),
+									  rgba(255, 255, 255, 0));
 	background-repeat: no-repeat;
 }
 
